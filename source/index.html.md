@@ -1,245 +1,494 @@
 ---
-title: API Reference
-
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
-
+title: rest-quarkus_example API v1.0.0-SNAPSHOT
+language_tabs:
+  - java: Java
+toc_footers: []
+includes: []
 search: true
+highlight_theme: darkula
+headingLevel: 2
 
-code_clipboard: true
-
-meta:
-  - name: description
-    content: Documentation for the Kittn API
 ---
 
-# Introduction
+<!-- Generator: Widdershins v4.0.1 -->
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+<h1 id="rest-quarkus_example-api">rest-quarkus_example API v1.0.0-SNAPSHOT</h1>
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+<h1 id="rest-quarkus_example-api-movies">Movies</h1>
 
-# Authentication
+This package is created to manage all the movies stored in the database,
+  here we can find 2 classes; Movie and MovieResources, where are all the
+ endpoints linked to the following methods:
+ *  getMovies
+ *  countMovies
+ *  createMovies
+ *  getMovieAuthorById
+ *  updateMovie
+ *  deleteMovie
 
-> To authorize, use this code:
+## get__movies
 
-```ruby
-require 'kittn'
+`GET /movies`
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+*getMovies*
 
-```python
-import kittn
+ Return all the data about the movies that exists
 
-api = kittn.authorize('meowmeowmeow')
-```
+<h3 id="get__movies-responses">Responses</h3>
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The return is ok|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+This operation does not require authentication
 </aside>
 
-## Get a Specific Kitten
+## post__movies
 
-```ruby
-require 'kittn'
+`POST /movies`
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+*createMovies*
 
-```python
-import kittn
+Add a movie including title, id, and author
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> Body parameter
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "type": "object",
+  "properties": {
+    "id": {
+      "format": "int64",
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "duration": {
+      "format": "int32",
+      "type": "integer"
+    }
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
+<h3 id="post__movies-parameters">Parameters</h3>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[Movie](#schemamovie)|false|none|
 
-### HTTP Request
+<h3 id="post__movies-responses">Responses</h3>
 
-`GET http://example.com/kittens/<ID>`
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The movie is added correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
 
-### URL Parameters
+<aside class="success">
+This operation does not require authentication
+</aside>
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+## get__movies_author_{id}
 
-## Delete a Specific Kitten
+`GET /movies/author/{id}`
 
-```ruby
-require 'kittn'
+*getMovieAuthorById*
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+Returns a movie knowing the id of the author
 
-```python
-import kittn
+<h3 id="get__movies_author_{id}-parameters">Parameters</h3>
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|integer(int64)|true|none|
 
-```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
-```
+> Example responses
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> 200 Response
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "type": "object"
 }
 ```
 
-This endpoint deletes a specific kitten.
+<h3 id="get__movies_author_{id}-responses">Responses</h3>
 
-### HTTP Request
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The return is ok|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
 
-`DELETE http://example.com/kittens/<ID>`
+<h3 id="get__movies_author_{id}-responseschema">Response Schema</h3>
 
-### URL Parameters
+<aside class="success">
+This operation does not require authentication
+</aside>
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+## get__movies_size
+
+`GET /movies/size`
+
+*countMovies*
+
+ Return  the number of movies that exists
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "format": "int32",
+  "type": "integer"
+}
+```
+
+<h3 id="get__movies_size-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The return is ok|integer|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## delete__movies_{id}
+
+`DELETE /movies/{id}`
+
+*deleteSong*
+
+Deletes  a movie from the DB knowing the id of the movie
+
+<h3 id="delete__movies_{id}-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|integer(int64)|true|none|
+
+<h3 id="delete__movies_{id}-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|204|[No Content](https://tools.ietf.org/html/rfc7231#section-6.3.5)|The movie was removed correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## put__movies_{id}_{title}
+
+`PUT /movies/{id}/{title}`
+
+*updateMovie*
+
+Updates the title of a movie
+
+<h3 id="put__movies_{id}_{title}-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|integer(int64)|true|none|
+|title|path|string|true|none|
+
+<h3 id="put__movies_{id}_{title}-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The title was updated correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="rest-quarkus_example-api-songs">Songs</h1>
+
+This package is created to manage all the songs stored in the database,
+  here we can find 2 classes; Songs and SongResources, where are all the
+  endpoints linked to the following methods:
+  - getSongs 
+  - countSongs
+  - createSongs
+  - totalDurationSongs
+  - updateGroupSongs
+  - deleteSong
+
+## get__songs
+
+`GET /songs`
+
+*getSongs*
+
+ Return all the data about the songs that exists
+
+<h3 id="get__songs-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The return is ok|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## post__songs
+
+`POST /songs`
+
+*createSong*
+
+Add a song including name, id, duration and group which belongs
+
+> Body parameter
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "format": "int32",
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "group": {
+      "type": "string"
+    },
+    "duration": {
+      "format": "int64",
+      "type": "integer"
+    }
+  }
+}
+```
+
+<h3 id="post__songs-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[Song](#schemasong)|false|none|
+
+<h3 id="post__songs-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The song is added correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## delete__songs_delete_{id}
+
+`DELETE /songs/delete/{id}`
+
+*deleteSong*
+
+Deletes  a song from the DB knowing the id of the song
+
+<h3 id="delete__songs_delete_{id}-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|integer(int32)|true|none|
+
+<h3 id="delete__songs_delete_{id}-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|204|[No Content](https://tools.ietf.org/html/rfc7231#section-6.3.5)|The song was removed correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## put__songs_modifyGroup_{id}_{newGroupName}
+
+`PUT /songs/modifyGroup/{id}/{newGroupName}`
+
+*updateGroupSong*
+
+Updates the group of a song knowing the ID of the song
+
+<h3 id="put__songs_modifygroup_{id}_{newgroupname}-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|integer(int32)|true|none|
+|newGroupName|path|string|true|none|
+
+<h3 id="put__songs_modifygroup_{id}_{newgroupname}-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The group was modified correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## get__songs_size
+
+`GET /songs/size`
+
+*countSongs*
+
+ Return  the number of songs that exists
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "format": "int32",
+  "type": "integer"
+}
+```
+
+<h3 id="get__songs_size-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The return is ok|integer|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## get__songs_totalDuration_{group}
+
+`GET /songs/totalDuration/{group}`
+
+*totalDurationSongs*
+
+Return the time (in minutes) of the total duration of songs that belongs to that group 
+
+<h3 id="get__songs_totalduration_{group}-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|group|path|string|true|none|
+
+<h3 id="get__songs_totalduration_{group}-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The group was modified correctly|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Something went wrong (BAD_REQUEST)|None|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|The path was incorrect|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+# Schemas
+
+<h2 id="tocS_Movie">Movie</h2>
+<!-- backwards compatibility -->
+<a id="schemamovie"></a>
+<a id="schema_Movie"></a>
+<a id="tocSmovie"></a>
+<a id="tocsmovie"></a>
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "format": "int64",
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "duration": {
+      "format": "int32",
+      "type": "integer"
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|integer(int64)|false|none|none|
+|title|string|false|none|none|
+|author|string|false|none|none|
+|duration|integer(int32)|false|none|none|
+
+<h2 id="tocS_Song">Song</h2>
+<!-- backwards compatibility -->
+<a id="schemasong"></a>
+<a id="schema_Song"></a>
+<a id="tocSsong"></a>
+<a id="tocssong"></a>
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "format": "int32",
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "group": {
+      "type": "string"
+    },
+    "duration": {
+      "format": "int64",
+      "type": "integer"
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|integer(int32)|false|none|none|
+|name|string|false|none|none|
+|group|string|false|none|none|
+|duration|integer(int64)|false|none|none|
 
